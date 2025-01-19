@@ -163,6 +163,47 @@ describe("GET /comments", () => {
   });
 });
 
+describe("GET /comments/by_user?userId=", () => {
+  describe("when there are no comments", () => {
+    it("should return empty array", async () => {
+      const response = await request(app).get(`/comments`);
+
+      expect(response.statusCode).toBe(200);
+      expect(response.body).toHaveLength(0);
+    });
+  });
+
+  describe("when there are comments", () => {
+    beforeEach(async () => {
+      comments = comments.map((comment: Partial<IComment>) => ({
+        ...comment,
+        postID: post._id,
+        userId: testUser._id,
+      }));
+      comments.push({
+        postID: new mongoose.Types.ObjectId("673b7bd1df3f05e1bdcf5321"),
+        content: "Third comment",
+        userId: testUser._id,
+      });
+      await commentsModel.create(comments);
+    });
+
+    it("should return all comments by user id", async () => {
+      const response = await request(app).get(`/comments/by_user?userId=${testUser._id}`);
+
+      expect(response.statusCode).toBe(200);
+      expect(response.body).toHaveLength(comments.length);
+    });
+
+    it("should return 400 when user_id is invalid", async () => {
+      const response = await request(app).get(`/comments/by_user?userId=invalid`);
+
+      expect(response.statusCode).toBe(400);
+      expect(response.body).toHaveProperty("error");
+    });
+  });
+});
+
 describe("PUT /comments/:comment_id", () => {
   let savedComments: Partial<IComment>[];
   beforeEach(async () => {

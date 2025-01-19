@@ -8,6 +8,8 @@ import { useParams } from "react-router-dom";
 import User from "../../models/user";
 import { UsersService } from "../../services/usersService";
 import { useUser } from "../../context/userContext";
+import CommentsList from "../../components/CommentsList/CommentsList";
+import useComments from "../../hooks/useComments";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -69,6 +71,7 @@ export default function UserProfile() {
   const [selectedUser, setSelectedUser] = useState<User | undefined>(undefined);
 
   const { posts, postsLoadingState } = usePosts(selectedUser);
+  const { comments, commentsLoadingState } = useComments(selectedUser);
 
   useEffect(() => {
     getSelectedUser(user, setUser, isUserLoaded, userId).then(
@@ -135,7 +138,11 @@ export default function UserProfile() {
             />
           </CustomTabPanel>
           <CustomTabPanel value={selectedTab} index={1}>
-            <div>Not implemented yet</div>
+            <CommentsList
+                maxCommentsPerPage={5}
+                comments={comments ?? []}
+                loadingState={commentsLoadingState}
+              />
           </CustomTabPanel>
         </div>
       </div>

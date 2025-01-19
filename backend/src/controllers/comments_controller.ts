@@ -20,6 +20,18 @@ const getComments = async (req: Request, res: Response): Promise<any> => {
   }
 };
 
+const getCommentsByUser = async (req: Request, res: Response): Promise<any> => {
+  try {
+    const { userId }: { userId?: string } = req.query;
+    const comments: IComment[] = await Comment.find({ userId: userId }).populate("userId")
+
+    return res.json(comments);
+  } catch (err: any) {
+    console.warn("Error fetching comments:", err);
+    return handleMongoQueryError(res, err);
+  }
+};
+
 const saveNewComment = async (req: Request, res: Response): Promise<any> => {
   const { post_id }: { post_id?: string } = req.query;
 
@@ -98,4 +110,5 @@ export default {
   saveNewComment,
   updateCommentById,
   deleteCommentById,
+  getCommentsByUser,
 };

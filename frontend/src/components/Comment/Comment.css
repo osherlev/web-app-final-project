@@ -41,6 +41,7 @@
   background: #333;
   border-radius: 8px;
   margin-bottom: 12px;
+  width: 100%;
 }
 
 .comment-header {

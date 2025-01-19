@@ -18,7 +18,7 @@ interface CommentProps {
   refreshComments: () => void;
 }
 
-const CommentComponent = ({ comment, refreshComments }: CommentProps) => {
+export const CommentComponent = ({ comment, refreshComments }: CommentProps) => {
   const { user, setUser } = useUser();
 
   const handleDeleteComment = (comment_id: string) => {

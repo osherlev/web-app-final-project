@@ -128,6 +128,38 @@ router.get("/", commentsController.getComments);
 
 /**
  * @swagger
+ * /comments/by_user:
+ *   get:
+ *     tags:
+ *       - Comment
+ *     summary: Get comments by user ID
+ *     description: Fetch all comments made by a specific user using their userId.
+ *     parameters:
+ *       - name: userId
+ *         in: query
+ *         description: The ID of the user to fetch comments for
+ *         required: true
+ *         schema:
+ *           type: string
+ *           example: 678cfa27e0e6831c12ab577f
+ *     responses:
+ *          '200':
+ *            description: Successful operation
+ *            content:
+ *              application/json:
+ *                schema:
+ *                  $ref: '#/components/schemas/Comment'
+ *          '500':
+ *            description: An unexpected error occurred
+ *            content:
+ *              application/json:
+ *                schema:
+ *                  $ref: '#/components/schemas/UnexpectedError'
+ */
+router.get("/by_user", authMiddleware, commentsController.getCommentsByUser);
+
+/**
+ * @swagger
  * paths:
  *  /comments/{commentId}:
  *   put:

@@ -25,6 +25,27 @@ export class CommentsService {
 
     return { request, cancel: () => controller.abort() };
   }
+  
+  getComments() {
+    const controller = new AbortController();
+    const request = this.httpClient.get<Comment[]>(`${config.backendURL}/comments`, {
+      signal: controller.signal,
+    });
+
+    return { request, cancel: () => controller.abort() };
+  }
+
+  getCommentsByUser(userId: string) {
+    const controller = new AbortController();
+    const request = this.httpClient.get<Comment[]>(
+      `${config.backendURL}/comments/by_user?userId=${userId}`,
+      {
+        signal: controller.signal,
+      }
+    );
+
+    return { request, cancel: () => controller.abort() };
+  }
 
   saveNewComment(content: string, postId: string) {
     const controller = new AbortController();

@@ -5,4 +5,5 @@ export const routes = {
   CREATE_POST: "/create-post",
   POST: "/post",
   SIGN_IN: "/signin",
+  COMMENT: "/comment",
 };
